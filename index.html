@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en" ng-app="todoApp">
+
+<head>
+<meta charset="utf-8">
+<title>Get It Done</title>
+<meta name="description" content="Simple Todo Application">
+<meta name="author" content="Alexander Sadovsky">
+
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="css/custom.css">
+<link href='http://fonts.googleapis.com/css?family=Josefin+Sans' rel='stylesheet' type='text/css'>
+<script src="js/angular.min.js"></script>
+<script src="js/controllers/todoCtrl.js"></script>
+<script src="js/directives/todoFocus.js"></script>
+<script src="js/directives/todoEscape.js"></script>
+<script src="js/jquery-1.11.1.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/custom_jquery.js"></script>
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+
+<body>
+<div class="container" ng-controller="TodoCtrl">
+    <div class="row">
+        <div class="col-md-3 col-md-offset-1" id="sidebar">
+
+         <div class="row" id="newtodo">
+             <div class="col-md-12">
+            <button type="button" class="btn btn-default" id="buttonNewTodo"><span class="glyphicon glyphicon-plus"></span> new todo</button>
+            </div>
+        </div>
+
+            <div class="row" id="tags">
+                <div class="col-md-12 btn-group btn-group-xs">
+                   <span id="tagsHeader"><span class="glyphicon glyphicon-tags"></span> Tags</span><button type="button" class="btn btn-default" style="float:right;" id="buttonNewTag"><span class="glyphicon glyphicon-plus"></span> new tag</button>
+                    <ul class="list-group">
+                      <li class="list-group-item" ng-repeat="tag in tags">
+                        <span class="badge">0</span>
+                        {{tag.name}}
+                      </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!--div class="row" id="spodok">
+                <div class="col-md-12 btn-group btn-group-xs">
+                <button type="button" class="btn btn-info"><span class="glyphicon glyphicon-circle-arrow-down"></span> Export to CSV</button>
+                </div>
+            </div-->
+
+        </div>
+        <div class="col-md-6">
+
+        <div class="row" id="topnav">
+             <div class="col-md-12">
+                 <form ng-submit="addTodo()">
+                   <input type="text" id="inputNewTodo" placeholder="Create new todo" ng-model="newTodo" />
+                 </form>
+                 <form ng-submit="addTag()">
+                   <input type="text" id="inputNewTag" placeholder="Create new tag" ng-model="newTag" />
+                 </form>
+             <input type="search" class="search" placeholder="Search" ng-model="search" autofocus />
+            </div>
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-md-12">
+            <ul id="todo_ul">
+                <li ng-class="{finished_text: todo.finished, editing: todo == editedTodo}"" ng-repeat="todo in todos | filter:search | orderBy:'finished'" ng-dblclick="editTodo(todo)">
+                <div class="view">
+                <span ng-class="todo.finished ? 'finished glyphicon glyphicon-ok' : 'unfinished glyphicon glyphicon-ok'" ng-click="toggleTodo(todo)"></span>{{todo.subject}}
+                <span class="deleteTodo glyphicon glyphicon-remove" ng-click="deleteTodo(todo)"></span>
+                </div>
+                    <form ng-submit="doneEditing(todo)">
+                        <input class="edit" ng-trim="false" ng-model="todo.subject" todo-escape="revertEditing(todo)" ng-blur="doneEditing(todo)" todo-focus="todo == editedTodo">
+                    </form>
+                </li>
+            </ul>
+            </div>
+        </div>
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+</body>
+
+</html>
