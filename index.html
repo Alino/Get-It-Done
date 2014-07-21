@@ -38,9 +38,14 @@
                 <div class="col-md-12 btn-group btn-group-xs">
                    <span id="tagsHeader"><span class="glyphicon glyphicon-tags"></span> Tags</span><button type="button" class="btn btn-default" style="float:right;" id="buttonNewTag"><span class="glyphicon glyphicon-plus"></span> new tag</button>
                     <ul class="list-group">
-                      <li class="list-group-item" ng-repeat="tag in tags">
-                        <span class="badge">0</span>
+                      <li class="list-group-item" ng-class="{editing: tag == editedTag}" ng-repeat="tag in tags" ng-dblclick="editTag(tag)">
+                        <div class="view">
+                          <span class="badge">0</span>
                         {{tag.name}}
+                        </div>
+                          <form ng-submit="doneEditingTag(tag)">
+                              <input class="edit" ng-trim="false" ng-model="tag.name" tag-escape="revertEditingTag(tag)" ng-blur="doneEditingTag(tag)" tag-focus="tag == editedTag">
+                          </form>
                       </li>
                     </ul>
                 </div>

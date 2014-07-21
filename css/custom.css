@@ -2,7 +2,7 @@
 #sidebar {/*background-color:grey;*/min-height: 300px;border-right:1px solid #ccc;}
 #newtodo {position: absolute; top:10px; right:15px;}
 #tagsHeader {color: #bbb;}
-#tags {position: absolute; top: 70px; right: 15px; min-width: 200px;}
+#tags {position: absolute; top: 70px; right: 15px; min-width: 200px; max-width: 300px;}
 #todo_ul, li {list-style-type: none; font-family: 'Josefin Sans', sans-serif; font-size:1.1em;}
 #todo_ul {padding: 20px 0 2px 0;}
 #todo_ul li:hover {background-color: #e4b9b9;}
@@ -12,10 +12,9 @@
 .finished {cursor: pointer;color: green; margin-right:5px;}
 .unfinished {cursor: pointer;color: #CDE; margin-right:5px;}
 .deleteTodo {float: right; padding-top: 3px; color: red; display: none;}
-
-#todo_ul li .edit {display: none;}
-#todo_ul li.editing .view {display: none;}
-
+#todo_ul li .edit, #tags li .edit {display: none;}
+#todo_ul li.editing .view, #tags li.editing .view {display: none;}
+#tags li .edit {max-width: 200px;}
 
 .edit {
     position: relative;
@@ -41,12 +40,12 @@
     font-smoothing: antialiased;
 }
 
-#todo_ul li.editing {
+#todo_ul li.editing, #tags li.editing {
     border-bottom: none;
     padding: 0;
 }
 
-#todo_ul li.editing .edit {
+#todo_ul li.editing .edit, #tags li.editing .edit {
     display: block;
     width: 506px;
     padding: 13px 17px 12px 17px;

@@ -84,4 +84,25 @@ todoApp.controller('TodoCtrl', ['$scope', function($scope) {
     };
 
 
+
+    $scope.editTag = function (tag) {
+        $scope.editedTag = tag;
+// Clone the original todo to restore it on demand.
+        $scope.originalTag = angular.extend({}, tag);
+    };
+
+    $scope.doneEditingTag = function (tag) {
+        $scope.editedTag = null;
+        tag.name = tag.name.trim();
+
+        if (!tag.name) {
+            $scope.deleteTag(tag);
+        }
+    };
+
+    $scope.revertEditingTag = function (tag) {
+        $scope.tags[$scope.tags.indexOf(tag)] = $scope.originalTag;
+        $scope.doneEditing($scope.originalTag);
+    };
+
 }]);
