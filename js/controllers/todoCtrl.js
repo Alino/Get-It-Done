@@ -1,5 +1,6 @@
 var todoApp = angular.module('todoApp',[]);
 
+//get data from REST - /api/todo/?format=json
 
 todoApp.controller('TodoCtrl', ['$scope', function($scope) {
     $scope.todos = [{subject: "have a good sleep tonight", finished:false},
