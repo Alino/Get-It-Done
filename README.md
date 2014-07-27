@@ -5,3 +5,6 @@ The app is using
 * jquery
 * bootstrap
 * and very soon python django backend with SQLlite database
+
+check out live demo here:
+http://todo.dopice.sk
