@@ -7,3 +7,10 @@ class Todo(models.Model):
     done = models.BooleanField()
     updated = models.DateTimeField(auto_now_add=True)
 
+class Tag(models.Model):
+    name = models.CharField(max_length=20)
+    updated = models.DateTimeField()
+
+class TagsTodoAssoc(models.Model):
+    tag_id = models.ForeignKey(Tag)
+    todo_id = models.ForeignKey(Todo)

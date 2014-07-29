@@ -1,8 +1,21 @@
-var todoApp = angular.module('todoApp',[]);
+var todoApp = angular.module('todoApp', ['ngResource']);
 
-//get data from REST - /api/todo/?format=json
+todoApp.factory("Post", function($resource) {
+    return $resource("http://localhost:8000/todos/");
+});
 
-todoApp.controller('TodoCtrl', ['$scope', '$http', function($scope) {
+//TODO get data from REST
+/* //DOESNT WORK YET
+todoApp.controller("PostIndexCtrl", function($scope, Post) {
+    Post.query(function(data) {
+        $scope.posts = data;
+        console.log(data);
+    });
+});
+*/
+
+
+todoApp.controller('TodoCtrl', ['$scope', function($scope) {
     $scope.todos = [{subject: "have a good sleep tonight", finished:false},
         {subject: "read \"Pro AngularJS\" book", finished:false},
         {subject: "eat some burgers", finished:false},
@@ -12,8 +25,6 @@ todoApp.controller('TodoCtrl', ['$scope', '$http', function($scope) {
         {subject: "read \"Two spoons of django\" book", finished:false},
         {subject: "start this project and commit to github", finished:true}
     ];
-
-
 
 
     $scope.toggleTodo = function(todo) {
