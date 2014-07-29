@@ -1,0 +1,4 @@
+#!/bin/sh
+
+
+curl -X POST -H 'Content-Type: application/json' -H 'Authorization: bearer f5d9379e2243d9f145c9b725fe43aea6c0177e4d' -d '{"description":"Another ToDo"}' http://localhost:8000/todos/ 

@@ -1,0 +1,6 @@
+HTTP/1.0 500 INTERNAL SERVER ERROR
+Date: Mon, 28 Jul 2014 19:03:30 GMT
+Server: WSGIServer/0.1 Python/2.7.6
+X-Frame-Options: SAMEORIGIN
+Content-Type: text/html
+
