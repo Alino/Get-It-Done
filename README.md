@@ -4,4 +4,7 @@ The app is using
 * angularjs
 * jquery
 * bootstrap
-* and very soon python django backend with SQLlite database - in progress
+* and very soon python django backend with SQLlite database
+
+check out live demo here:
+http://todo.dopice.sk
