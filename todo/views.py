@@ -12,9 +12,11 @@ from rest_framework.views import APIView
 from provider.oauth2.models import Client
 
 # TODO app
+from django.http import HttpResponse
 from todo.serializers import RegistrationSerializer
 from todo.serializers import UserSerializer, TodoSerializer
 from todo.models import Todo
+from django.shortcuts import render_to_response
 
 class RegistrationView(APIView):
       permission_classes = ()
@@ -69,3 +71,7 @@ class TodosView(APIView):
              t = Todo(id=todo_id,owner=request.user,description=desc,done=done,updated=datetime.now())
              t.save()
              return Response(status=status.HTTP_200_OK)
+
+
+def index(request):
+    return render_to_response("view/index.html")

@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en" ng-app="todoApp">
+
+<head>
+<meta charset="utf-8">
+<title>Get It Done</title>
+<meta name="description" content="Simple Todo Application">
+<meta name="author" content="Alexander Sadovsky">
+{% load staticfiles %}
+<link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/bootstrap-theme.min.css' %}">
+<link rel="stylesheet" href="{% static 'css/custom.css' %}">
+<link href='http://fonts.googleapis.com/css?family=Josefin+Sans' rel='stylesheet' type='text/css'>
+<script src="{% static 'js/angular.min.js' %}"></script>
+<script src="{% static 'js/angular-resource.min.js' %}"></script>
+<script src="{% static 'js/controllers/todoCtrl.js' %}"></script>
+<script src="{% static 'js/directives/todoFocus.js' %}"></script>
+<script src="{% static 'js/directives/todoEscape.js' %}"></script>
+<script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/custom_jquery.js' %}"></script>
+<!--[if lt IE 9]>
+<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]-->
+</head>
+
+<body>
+<div class="container" ng-controller="TodoCtrl">
+    <div class="row">
+        <div class="col-md-3 col-md-offset-1" id="sidebar">
+
+         <div class="row" id="newtodo">
+             <div class="col-md-12">
+            <button type="button" class="btn btn-default" id="buttonNewTodo"><span class="glyphicon glyphicon-plus"></span> new todo</button>
+            </div>
+        </div>
+
+         {% verbatim %}
+            <div class="row" id="tags">
+                <div class="col-md-12 btn-group btn-group-xs">
+                   <span id="tagsHeader"><span class="glyphicon glyphicon-tags"></span> Tags</span><button type="button" class="btn btn-default" style="float:right;" id="buttonNewTag"><span class="glyphicon glyphicon-plus"></span> new tag</button>
+                    <ul class="list-group">
+                      <li class="list-group-item" ng-class="{editing: tag == editedTag}" ng-repeat="tag in tags" ng-dblclick="editTag(tag)">
+                        <div class="view">
+                          <span class="badge">0</span>
+                        {{tag.name}}
+                        </div>
+                          <form ng-submit="doneEditingTag(tag)">
+                              <input class="edit" ng-trim="false" ng-model="tag.name" tag-escape="revertEditingTag(tag)" ng-blur="doneEditingTag(tag)" tag-focus="tag == editedTag">
+                          </form>
+                      </li>
+                    </ul>
+                </div>
+            </div>
+        {% endverbatim %}
+
+            <!--div class="row" id="spodok">
+                <div class="col-md-12 btn-group btn-group-xs">
+                <button type="button" class="btn btn-info"><span class="glyphicon glyphicon-circle-arrow-down"></span> Export to CSV</button>
+                </div>
+            </div-->
+
+        </div>
+        <div class="col-md-6">
+
+        <div class="row" id="topnav">
+             <div class="col-md-12">
+                 <form ng-submit="addTodo()">
+                   <input type="text" id="inputNewTodo" placeholder="Create new todo" ng-model="newTodo" />
+                 </form>
+                 <form ng-submit="addTag()">
+                   <input type="text" id="inputNewTag" placeholder="Create new tag" ng-model="newTag" />
+                 </form>
+             <input type="search" class="search" placeholder="Search" ng-model="search" autofocus />
+            </div>
+        </div>
+
+
+        {% verbatim %}
+        <div class="row">
+            <div class="col-md-12">
+            <ul id="todo_ul">
+                <li ng-class="{finished_text: todo.finished, editing: todo == editedTodo}"" ng-repeat="todo in todos | filter:search | orderBy:'done'" ng-dblclick="editTodo(todo)">
+                <div class="view">
+                <span ng-class="todo.done ? 'finished glyphicon glyphicon-ok' : 'unfinished glyphicon glyphicon-ok'" ng-click="toggleTodo(todo)"></span>{{todo.description}}
+                <span class="deleteTodo glyphicon glyphicon-remove" ng-click="deleteTodo(todo)"></span>
+                </div>
+                    <form ng-submit="doneEditing(todo)">
+                        <input class="edit" ng-trim="false" ng-model="todo.description" todo-escape="revertEditing(todo)" ng-blur="doneEditing(todo)" todo-focus="todo == editedTodo">
+                    </form>
+                </li>
+            </ul>
+            </div>
+        </div>
+        {% endverbatim %}
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+</body>
+
+</html>

@@ -1,34 +1,42 @@
-var todoApp = angular.module('todoApp', ['ngResource']);
+var todoApp = angular.module('todoApp', []);
 
-todoApp.factory("Post", function($resource) {
-    return $resource("http://localhost:8000/todos/");
+todoApp.service('dataService', function($http) {
+    delete $http.defaults.headers.common['X-Requested-With'];
+    this.getData = function() {
+        // $http() returns a $promise that we can add handlers with .then()
+        return $http({
+            method: 'GET',
+            url: 'http://localhost:8000/todos/?format=json',
+            params: 'limit=10',
+            headers: {'Authorization': 'bearer f44ba59438f607a23517c423ccb38e9aa798dfeb'}
+        });
 });
 
-//TODO get data from REST
-/* //DOESNT WORK YET
-todoApp.controller("PostIndexCtrl", function($scope, Post) {
-    Post.query(function(data) {
-        $scope.posts = data;
-        console.log(data);
-    });
-});
-*/
 
 
-todoApp.controller('TodoCtrl', ['$scope', function($scope) {
-    $scope.todos = [{subject: "have a good sleep tonight", finished:false},
-        {subject: "read \"Pro AngularJS\" book", finished:false},
-        {subject: "eat some burgers", finished:false},
-        {subject: "read \"Instant Django Application Development\" book", finished:true},
-        {subject: "finish this project", finished:false},
-        {subject: "watch lynda.com angularjs tutorials", finished:true},
-        {subject: "read \"Two spoons of django\" book", finished:false},
-        {subject: "start this project and commit to github", finished:true}
+
+todoApp.controller('TodoCtrl', ['$scope', 'dataService', function($scope, dataService) {
+    $scope.todos = [{description: "have a good sleep tonight", done:false},
+        {description: "read \"Pro AngularJS\" book", done:false},
+        {description: "eat some burgers", done:false},
+        {description: "read \"Instant Django Application Development\" book", done:true},
+        {description: "finish this project", done:false},
+        {description: "watch lynda.com angularjs tutorials", done:true},
+        {description: "read \"Two spoons of django\" book", done:false},
+        {description: "start this project and commit to github", done:true}
     ];
+    console.log($scope.todos);
 
+    //get data from REST
+   /* $scope.todos = null;
+    dataService.getData().then(function (dataResponse) {
+        $scope.todos = dataResponse.data;
+        console.log($scope.todos);
+    });
 
+*/
     $scope.toggleTodo = function(todo) {
-        todo.finished ? todo.finished = false : todo.finished = true;
+        todo.done ? todo.done = false : todo.done = true;
     };
 
 
@@ -40,8 +48,8 @@ todoApp.controller('TodoCtrl', ['$scope', function($scope) {
         }
 
         $scope.todos.push({
-            subject: newTodo,
-            finished: false
+            description: newTodo,
+            done: false
         });
 
         $scope.newTodo = '';
@@ -59,9 +67,9 @@ todoApp.controller('TodoCtrl', ['$scope', function($scope) {
 
     $scope.doneEditing = function (todo) {
         $scope.editedTodo = null;
-        todo.subject = todo.subject.trim();
+        todo.description = todo.description.trim();
 
-        if (!todo.subject) {
+        if (!todo.description) {
             $scope.deleteTodo(todo);
         }
     };

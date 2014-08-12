@@ -8,9 +8,11 @@ class Todo(models.Model):
     updated = models.DateTimeField(auto_now_add=True)
 
 class Tag(models.Model):
+    owner = models.ForeignKey(User)
     name = models.CharField(max_length=20)
     updated = models.DateTimeField()
 
 class TagsTodoAssoc(models.Model):
+    owner = models.ForeignKey(User)
     tag_id = models.ForeignKey(Tag)
     todo_id = models.ForeignKey(Todo)

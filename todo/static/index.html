@@ -80,7 +80,7 @@
             <ul id="todo_ul">
                 <li ng-class="{finished_text: todo.finished, editing: todo == editedTodo}"" ng-repeat="todo in todos | filter:search | orderBy:'finished'" ng-dblclick="editTodo(todo)">
                 <div class="view">
-                <span ng-class="todo.finished ? 'finished glyphicon glyphicon-ok' : 'unfinished glyphicon glyphicon-ok'" ng-click="toggleTodo(todo)"></span>{{todo.subject}}
+                <span ng-class="todo.finished ? 'finished glyphicon glyphicon-ok' : 'unfinished glyphicon glyphicon-ok'" ng-click="toggleTodo(todo)"></span>{{todo.description}}
                 <span class="deleteTodo glyphicon glyphicon-remove" ng-click="deleteTodo(todo)"></span>
                 </div>
                     <form ng-submit="doneEditing(todo)">
