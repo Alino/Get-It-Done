@@ -72,6 +72,11 @@ class TodosView(APIView):
              t.save()
              return Response(status=status.HTTP_200_OK)
 
+      def delete(self,request, todo_id):
+          t = Todo.objects.filter(id=todo_id)
+          t.delete()
+          return Response(status=status.HTTP_204_NO_CONTENT)
+
 
 def index(request):
     return render_to_response("view/index.html")

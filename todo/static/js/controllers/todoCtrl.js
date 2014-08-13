@@ -6,17 +6,51 @@ todoApp.service('dataService', function($http) {
         // $http() returns a $promise that we can add handlers with .then()
         return $http({
             method: 'GET',
-            url: 'http://localhost:8000/todos/?format=json',
-            params: 'limit=10',
+            url: '/todos/?format=json',
+            //params: 'limit=10',
             headers: {'Authorization': 'bearer f44ba59438f607a23517c423ccb38e9aa798dfeb'}
         });
+    }
+    this.postData = function(description) {
+        // $http() returns a $promise that we can add handlers with .then()
+        return $http({
+            method: 'POST',
+            url: '/todos/?format=json',
+            headers: {'Authorization': 'bearer f44ba59438f607a23517c423ccb38e9aa798dfeb'},
+            data: {
+                description: description, done: false
+            }
+        });
+    }
+    this.putData = function(id, description, done) {
+        // $http() returns a $promise that we can add handlers with .then()
+        return $http({
+            method: 'PUT',
+             url: '/todo/'+id+'?format=json',
+            headers: {'Authorization': 'bearer f44ba59438f607a23517c423ccb38e9aa798dfeb'},
+            data: {
+                id: id, description: description, done: done
+            }
+        });
+    }
+    this.deleteData = function(id) {
+        // $http() returns a $promise that we can add handlers with .then()
+        return $http({
+            method: 'DELETE',
+            url: '/todo/'+id+'?format=json',
+            headers: {'Authorization': 'bearer f44ba59438f607a23517c423ccb38e9aa798dfeb'},
+            data: {
+                id: id
+            }
+        });
+    }
 });
 
 
 
 
 todoApp.controller('TodoCtrl', ['$scope', 'dataService', function($scope, dataService) {
-    $scope.todos = [{description: "have a good sleep tonight", done:false},
+   /* $scope.todos = [{description: "have a good sleep tonight", done:false},
         {description: "read \"Pro AngularJS\" book", done:false},
         {description: "eat some burgers", done:false},
         {description: "read \"Instant Django Application Development\" book", done:true},
@@ -26,17 +60,20 @@ todoApp.controller('TodoCtrl', ['$scope', 'dataService', function($scope, dataSe
         {description: "start this project and commit to github", done:true}
     ];
     console.log($scope.todos);
-
+*/
     //get data from REST
-   /* $scope.todos = null;
+    $scope.todos = null;
     dataService.getData().then(function (dataResponse) {
         $scope.todos = dataResponse.data;
         console.log($scope.todos);
     });
 
-*/
+
+
     $scope.toggleTodo = function(todo) {
         todo.done ? todo.done = false : todo.done = true;
+        dataService.putData(todo.id, todo.description, todo.done).then(function (dataResponse) {
+        });
     };
 
 
@@ -47,16 +84,21 @@ todoApp.controller('TodoCtrl', ['$scope', 'dataService', function($scope, dataSe
             return;
         }
 
-        $scope.todos.push({
-            description: newTodo,
-            done: false
+        dataService.postData(newTodo).then(function (dataResponse) {
+            $scope.todos.push({
+                description: newTodo,
+                done: false
+            });
         });
+
 
         $scope.newTodo = '';
     };
 
     $scope.deleteTodo = function (todo) {
-        $scope.todos.splice($scope.todos.indexOf(todo), 1);
+        dataService.deleteData(todo.id).then(function (dataResponse) {
+            $scope.todos.splice($scope.todos.indexOf(todo), 1);
+        });
     };
 
     $scope.editTodo = function (todo) {
@@ -66,8 +108,10 @@ todoApp.controller('TodoCtrl', ['$scope', 'dataService', function($scope, dataSe
     };
 
     $scope.doneEditing = function (todo) {
-        $scope.editedTodo = null;
-        todo.description = todo.description.trim();
+        dataService.putData(todo.id, todo.description, todo.done).then(function (dataResponse) {
+            $scope.editedTodo = null;
+            todo.description = todo.description.trim();
+        });
 
         if (!todo.description) {
             $scope.deleteTodo(todo);
@@ -128,4 +172,4 @@ todoApp.controller('TodoCtrl', ['$scope', 'dataService', function($scope, dataSe
         $scope.doneEditing($scope.originalTag);
     };
 
-}]);
+}]);;
